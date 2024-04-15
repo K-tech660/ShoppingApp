@@ -1,4 +1,4 @@
-// Inventory.java
+
 package com.first.entity;
 
 import jakarta.persistence.Entity;
