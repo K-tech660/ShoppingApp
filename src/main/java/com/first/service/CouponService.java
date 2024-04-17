@@ -6,7 +6,7 @@ import com.first.entity.Coupon;
 
 public interface CouponService {
 
-	/* boolean isCouponValidForUser(String code, Long userId); */
+	
 
 	List<Coupon> getAllCoupons();
 

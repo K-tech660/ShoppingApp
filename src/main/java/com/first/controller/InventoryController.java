@@ -1,6 +1,7 @@
 package com.first.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -15,17 +16,29 @@ import com.first.entity.Inventory;
 @RequestMapping("/api")
 public class InventoryController {
 
-	@Autowired
-	private InventoryService inventoryService;
+    @Autowired
+    private InventoryService inventoryService;
 
-	@GetMapping("/inventory")
-	public Inventory getInventory() {
-		return inventoryService.getInventory();
-	}
+    @GetMapping("/inventory")
+    public ResponseEntity<Inventory> getInventory() {
+        Inventory inventory;
+        try {
+            inventory = inventoryService.getInventory();
+            return ResponseEntity.ok(inventory);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
-	@GetMapping("/availability")
-	public ResponseEntity<Boolean> checkProductAvailability(@RequestParam int quantity) {
-		boolean isAvailable = inventoryService.checkAvailability(quantity);
-		return ResponseEntity.ok(isAvailable);
-	}
+    @GetMapping("/availability")
+    public ResponseEntity<Boolean> checkProductAvailability(@RequestParam int quantity) {
+        try {
+            boolean isAvailable = inventoryService.checkAvailability(quantity);
+            return ResponseEntity.ok(isAvailable);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+        }
+    }
 }

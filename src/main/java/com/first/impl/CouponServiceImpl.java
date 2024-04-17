@@ -23,21 +23,27 @@ public class CouponServiceImpl implements CouponService {
 	}
 
 	@Override
-	public double applyCoupon(Long userId, String couponCode) {
-		Optional<Coupon> optionalCoupon = couponRepository.findByCouponCodeAndUserIdAndAppliedFalse(couponCode, userId);
+    public double applyCoupon(Long userId, String couponCode) {
+        try {
+            Optional<Coupon> optionalCoupon = couponRepository.findByCouponCodeAndUserIdAndAppliedFalse(couponCode, userId);
 
-		if (optionalCoupon.isPresent()) {
-			Coupon coupon = optionalCoupon.get();
-			double discountPercentage = coupon.getDiscountPercentage();
+            if (optionalCoupon.isPresent()) {
+                Coupon coupon = optionalCoupon.get();
+                double discountPercentage = coupon.getDiscountPercentage();
 
-			// Mark coupon as applied
-			coupon.setApplied(true);
-			couponRepository.save(coupon);
+                // Mark coupon as applied
+                coupon.setApplied(true);
+                couponRepository.save(coupon);
 
-			return discountPercentage;
-		}
+                return discountPercentage;
+            }
 
-		// Coupon not found or already applied
-		return 0.0;
-	}
+            // Coupon not found or already applied
+            return 0.0;
+        } catch (Exception ex) {
+            // Log the exception or perform other error handling tasks
+            throw new RuntimeException("Failed to apply coupon: " + ex.getMessage());
+        }
+    }
 }
+

@@ -16,9 +16,9 @@ public class Coupon {
 
     private double discountPercentage;
 
-    private Long userId; // User for whom this coupon is applied
+    private Long userId; 
 
-    private boolean applied; // Flag to track if coupon is applied
+    private boolean applied; 
 
    
     public boolean isApplied() {

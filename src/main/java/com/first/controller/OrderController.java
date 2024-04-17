@@ -1,7 +1,8 @@
 package com.first.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.first.Service.CouponService;
@@ -11,36 +12,63 @@ import com.first.entity.Orders;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
 
-	@Autowired
-	private OrderService orderService;
-	@Autowired
-	private CouponService couponService;
+    @Autowired
+    private OrderService orderService;
 
-	@PostMapping("/{userId}/place")
-	public Orders placeOrder(@PathVariable Long userId, @RequestParam int quantity,
-			@RequestParam(required = false) String couponCode) {
-		return orderService.placeOrder(userId, quantity, couponCode);
-	}
+    @Autowired
+    private CouponService couponService;
 
-	@GetMapping("/fetchCoupons")
-	public List<Coupon> getCoupons() {
+    @PostMapping("/{userId}/place")
+    public ResponseEntity<Orders> placeOrder(@PathVariable Long userId,
+                                             @RequestParam int quantity,
+                                             @RequestParam(required = false) String couponCode) {
+        try {
+            Orders order = orderService.placeOrder(userId, quantity, couponCode);
+            return ResponseEntity.ok(order);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
-		return couponService.getAllCoupons();
-	}
+    @GetMapping("/fetchCoupons")
+    public ResponseEntity<List<Coupon>> getCoupons() {
+        try {
+            List<Coupon> coupons = couponService.getAllCoupons();
+            return ResponseEntity.ok(coupons);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
-	@PostMapping("/{userId}/{orderId}/pay")
-	public void processPayment(@PathVariable Long userId, @PathVariable Long orderId, @RequestParam int amount) {
-		orderService.processPayment(userId, orderId, amount);
-	}
+    @PostMapping("/{userId}/{orderId}/pay")
+    public ResponseEntity<String> processPayment(@PathVariable Long userId,
+                                                 @PathVariable Long orderId,
+                                                 @RequestParam int amount) {
+        try {
+            orderService.processPayment( orderId, amount);
+            Orders order=new Orders();
+            return ResponseEntity.ok(order.getStatus());
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment processing failed");
+        }
+    }
 
-	@GetMapping("/orders")
-	public List<Orders> getOrder() {
-
-		return orderService.getAllOrder();
-	}
-
+    @GetMapping("/orders")
+    public ResponseEntity<List<Orders>> getAllOrders() {
+        try {
+            List<Orders> orders = orderService.getAllOrder();
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
