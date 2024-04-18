@@ -3,15 +3,17 @@ package com.first.entity;
 
 
 import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+<<<<<<< HEAD
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 
+=======
+>>>>>>> 087f67a31da8a57b5b8a9a24ea25a0380858454d
 @Entity
 public class Orders {
 
@@ -81,5 +83,9 @@ public class Orders {
 	}
 	
 
+<<<<<<< HEAD
     
 }
+=======
+}
+>>>>>>> 087f67a31da8a57b5b8a9a24ea25a0380858454d
