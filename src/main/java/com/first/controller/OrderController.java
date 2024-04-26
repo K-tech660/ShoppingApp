@@ -1,4 +1,4 @@
-package com.first.controller;
+tfpackage com.first.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,8 +53,8 @@ public class OrderController {
                                                  @RequestParam int amount) {
         try {
             orderService.processPayment( orderId, amount);
-            Orders order=new Orders();
-            return ResponseEntity.ok(order.getStatus());
+            
+            return ResponseEntity.ok(order);
         } catch (Exception e) {
             e.printStackTrace(); 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment processing failed");
