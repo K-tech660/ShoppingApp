@@ -52,6 +52,7 @@ public class OrderServiceImpl implements OrderService {
 	         if (inventory.getAvailable() < quantity) {
 	             throw new RuntimeException("Insufficient quantity available in inventory. Order cannot be placed.");
 	         }
+		     
 
 	         // Calculate order amount
 	         int unitPrice = inventory.getPrice();
@@ -131,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
 		    }
 
 		
-		    if (amount==order.getAmount()) {
+		    if (amount>0) {
 		        order.setStatus("SUCCESS");
 		    } else {
 		        order.setStatus("PLACED");
